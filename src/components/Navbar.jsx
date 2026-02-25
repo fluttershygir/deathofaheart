@@ -1,5 +1,10 @@
 import { Link } from 'react-router-dom';
 import { Sun } from 'lucide-react';
+import { client } from '../sanity/client';
+
+const prefetch = (category) => {
+  // Prefetching disabled to ensure fresh data
+};
 
 const Navbar = () => {
   return (
@@ -20,14 +25,15 @@ const Navbar = () => {
           fontSize: '1.1rem', 
           fontWeight: '400', 
           letterSpacing: '1px',
-          fontFamily: "'Playfair Display', serif"
+          fontFamily: "'Playfair Display', serif",
+          textTransform: 'lowercase'
         }}>
           deathofaheart
         </Link>
       </div>
       <div className="links" style={{ display: 'flex', gap: '3rem', alignItems: 'center' }}>
-        <Link to="/concerts" className="nav-link" style={{ fontSize: '0.9rem', color: '#ddd', letterSpacing: '2px', transition: 'color 0.3s' }} onMouseEnter={(e) => e.target.style.color = '#ff3333'} onMouseLeave={(e) => e.target.style.color = '#ddd'}>CONCERTS</Link>
-        <Link to="/portraits" className="nav-link" style={{ fontSize: '0.9rem', color: '#ddd', letterSpacing: '2px', transition: 'color 0.3s' }} onMouseEnter={(e) => e.target.style.color = '#ff3333'} onMouseLeave={(e) => e.target.style.color = '#ddd'}>PORTRAITS</Link>
+        <Link to="/concerts" className="nav-link" style={{ fontSize: '0.9rem', color: '#ddd', letterSpacing: '2px', transition: 'color 0.3s' }} onMouseEnter={(e) => { e.target.style.color = '#ff3333'; prefetch('concerts'); }} onMouseLeave={(e) => e.target.style.color = '#ddd'}>CONCERTS</Link>
+        <Link to="/portraits" className="nav-link" style={{ fontSize: '0.9rem', color: '#ddd', letterSpacing: '2px', transition: 'color 0.3s' }} onMouseEnter={(e) => { e.target.style.color = '#ff3333'; prefetch('portraits'); }} onMouseLeave={(e) => e.target.style.color = '#ddd'}>PORTRAITS</Link>
         <a 
           href="/#contact" 
           className="nav-link" 

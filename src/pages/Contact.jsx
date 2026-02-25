@@ -47,13 +47,14 @@ const Contact = () => {
                 <p style={{ color: '#fff', marginBottom: '1rem' }}>Los Angeles, CA</p>
                 
                 <p>Email:</p>
-                <a href="mailto:hello@deathofaheart.com" style={{ color: '#fff', textDecoration: 'none' }}>hello@deathofaheart.com</a>
+                <a href="mailto:shay7storey@gmail.com" style={{ color: '#fff', textDecoration: 'none' }}>shay7storey@gmail.com</a>
             </div>
         </div>
 
-        <form style={{ display: 'flex', flexDirection: 'column', gap: '2rem', marginTop: '1rem' }}>
+        <form action="https://formsubmit.co/shay7storey@gmail.com" method="POST" style={{ display: 'flex', flexDirection: 'column', gap: '2rem', marginTop: '1rem' }}>
           <div className="input-group">
               <input 
+                name="name"
                 type="text" 
                 placeholder="Name" 
                 style={{ 
@@ -73,6 +74,7 @@ const Contact = () => {
           </div>
           <div className="input-group">
               <input 
+                name="email"
                 type="email" 
                 placeholder="Email" 
                 style={{ 
@@ -92,6 +94,7 @@ const Contact = () => {
           </div>
           <div className="input-group">
               <textarea 
+                name="message"
                 placeholder="Tell me about your project..." 
                 rows="4" 
                 style={{ 

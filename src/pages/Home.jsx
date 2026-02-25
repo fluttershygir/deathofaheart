@@ -397,32 +397,65 @@ const Home = () => {
                             </p>
                         </div>
 
-                        <form style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
-                            {['Name', 'Email'].map((field) => (
-                                <div key={field}>
-                                    <input
-                                        type={field === 'Email' ? 'email' : 'text'}
-                                        placeholder={field}
-                                        style={{
-                                            width: '100%',
-                                            padding: '1rem 0',
-                                            background: 'transparent',
-                                            border: 'none',
-                                            borderBottom: '1px solid #333',
-                                            color: '#fff',
-                                            fontSize: '1.2rem',
-                                            outline: 'none',
-                                            transition: 'border-color 0.3s',
-                                            fontFamily: 'inherit'
-                                        }}
-                                        onFocus={(e) => e.target.style.borderColor = '#8b0000'}
-                                        onBlur={(e) => e.target.style.borderColor = '#333'}
-                                    />
-                                </div>
-                            ))}
+                        <form
+                            action="https://formsubmit.co/hello@deathofaheart.com"
+                            method="POST"
+                            style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}
+                        >
+                            {/* FormSubmit config */}
+                            <input type="hidden" name="_subject" value="New inquiry from deathofaheart.com" />
+                            <input type="hidden" name="_captcha" value="false" />
+                            <input type="hidden" name="_template" value="table" />
+
+                            <div>
+                                <input
+                                    type="text"
+                                    name="name"
+                                    placeholder="Name"
+                                    required
+                                    style={{
+                                        width: '100%',
+                                        padding: '1rem 0',
+                                        background: 'transparent',
+                                        border: 'none',
+                                        borderBottom: '1px solid #333',
+                                        color: '#fff',
+                                        fontSize: '1.2rem',
+                                        outline: 'none',
+                                        transition: 'border-color 0.3s',
+                                        fontFamily: 'inherit'
+                                    }}
+                                    onFocus={(e) => e.target.style.borderColor = '#8b0000'}
+                                    onBlur={(e) => e.target.style.borderColor = '#333'}
+                                />
+                            </div>
+                            <div>
+                                <input
+                                    type="email"
+                                    name="email"
+                                    placeholder="Email"
+                                    required
+                                    style={{
+                                        width: '100%',
+                                        padding: '1rem 0',
+                                        background: 'transparent',
+                                        border: 'none',
+                                        borderBottom: '1px solid #333',
+                                        color: '#fff',
+                                        fontSize: '1.2rem',
+                                        outline: 'none',
+                                        transition: 'border-color 0.3s',
+                                        fontFamily: 'inherit'
+                                    }}
+                                    onFocus={(e) => e.target.style.borderColor = '#8b0000'}
+                                    onBlur={(e) => e.target.style.borderColor = '#333'}
+                                />
+                            </div>
                             <div>
                                 <textarea
                                     placeholder="Tell me about your project..."
+                                    name="message"
+                                    required
                                     rows={4}
                                     style={{
                                         width: '100%',
