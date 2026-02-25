@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { client, urlFor } from '../sanity/client';
 
 const GalleryDetail = ({ category }) => {
@@ -8,6 +8,7 @@ const GalleryDetail = ({ category }) => {
   const navigate = useNavigate();
   const [gallery, setGallery] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [lightbox, setLightbox] = useState(null); // index of open image, or null
 
   useEffect(() => {
     if (!client) { setLoading(false); return; }
@@ -26,10 +27,93 @@ const GalleryDetail = ({ category }) => {
       .catch(() => setLoading(false));
   }, [slug]);
 
+  const images = gallery?.images || [];
+
+  const openLightbox = (i) => {
+    setLightbox(i);
+    document.body.style.overflow = 'hidden';
+  };
+  const closeLightbox = () => {
+    setLightbox(null);
+    document.body.style.overflow = '';
+  };
+  const prev = useCallback(() => setLightbox(i => (i - 1 + images.length) % images.length), [images.length]);
+  const next = useCallback(() => setLightbox(i => (i + 1) % images.length), [images.length]);
+
+  useEffect(() => {
+    if (lightbox === null) return;
+    const onKey = (e) => {
+      if (e.key === 'ArrowLeft') prev();
+      else if (e.key === 'ArrowRight') next();
+      else if (e.key === 'Escape') closeLightbox();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [lightbox, prev, next]);
+
   const back = category === 'concerts' ? '/concerts' : '/portraits';
 
   return (
     <div style={{ position: 'relative', minHeight: '100vh', backgroundColor: '#050505', color: '#eee', overflowX: 'hidden' }}>
+
+      {/* Lightbox */}
+      <AnimatePresence>
+        {lightbox !== null && images[lightbox]?.asset && (
+          <motion.div
+            key="lightbox"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            onClick={closeLightbox}
+            style={{ position: 'fixed', inset: 0, zIndex: 200, backgroundColor: 'rgba(0,0,0,0.92)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '4rem 1rem 5rem' }}
+          >
+            {/* Prev / Next */}
+            {images.length > 1 && (
+              <>
+                <button
+                  onClick={e => { e.stopPropagation(); prev(); }}
+                  style={{ position: 'fixed', left: '1.5rem', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: '#666', fontSize: '1.6rem', cursor: 'pointer', padding: '1rem', lineHeight: 1, transition: 'color 0.2s', zIndex: 201 }}
+                  onMouseEnter={e => e.currentTarget.style.color = '#fff'}
+                  onMouseLeave={e => e.currentTarget.style.color = '#666'}
+                >←</button>
+                <button
+                  onClick={e => { e.stopPropagation(); next(); }}
+                  style={{ position: 'fixed', right: '1.5rem', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: '#666', fontSize: '1.6rem', cursor: 'pointer', padding: '1rem', lineHeight: 1, transition: 'color 0.2s', zIndex: 201 }}
+                  onMouseEnter={e => e.currentTarget.style.color = '#fff'}
+                  onMouseLeave={e => e.currentTarget.style.color = '#666'}
+                >→</button>
+              </>
+            )}
+            {/* Close */}
+            <button
+              onClick={e => { e.stopPropagation(); closeLightbox(); }}
+              style={{ position: 'fixed', top: '1.5rem', right: '1.5rem', background: 'none', border: 'none', color: '#555', fontSize: '1.4rem', cursor: 'pointer', lineHeight: 1, padding: '0.5rem', transition: 'color 0.2s', zIndex: 201, letterSpacing: '0.1em', fontFamily: "'Inter', sans-serif" }}
+              onMouseEnter={e => e.currentTarget.style.color = '#fff'}
+              onMouseLeave={e => e.currentTarget.style.color = '#555'}
+            >✕</button>
+            {/* Image */}
+            <motion.img
+              key={lightbox}
+              initial={{ opacity: 0, scale: 0.97 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.97 }}
+              transition={{ duration: 0.25 }}
+              src={urlFor(images[lightbox]).width(1600).auto('format').quality(90).url()}
+              alt={images[lightbox].caption || `Image ${lightbox + 1}`}
+              onClick={e => e.stopPropagation()}
+              style={{ maxWidth: '90vw', maxHeight: '80vh', objectFit: 'contain', display: 'block' }}
+            />
+            {/* Caption + counter */}
+            <div style={{ marginTop: '1.25rem', textAlign: 'center' }} onClick={e => e.stopPropagation()}>
+              {images[lightbox].caption && (
+                <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: 'italic', fontSize: '1rem', color: '#ccc', marginBottom: '0.5rem' }}>{images[lightbox].caption}</p>
+              )}
+              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.65rem', letterSpacing: '0.3em', color: '#444', textTransform: 'uppercase' }}>{lightbox + 1} / {images.length}</p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       {/* Background glows */}
       <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none', overflow: 'hidden' }}>
         <motion.div
@@ -92,7 +176,8 @@ const GalleryDetail = ({ category }) => {
                     variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0 } }}
                     whileHover={{ scale: 1.02, boxShadow: '0 20px 40px rgba(139, 0, 0, 0.4)' }}
                     transition={{ duration: 0.4, ease: 'easeOut' }}
-                    style={{ flex: '0 0 calc(33.333% - 1rem)', minWidth: 0, borderRadius: '2px', overflow: 'hidden', backgroundColor: '#0a0000' }}
+                    onClick={() => img?.asset && openLightbox(i)}
+                    style={{ flex: '0 0 calc(33.333% - 1rem)', minWidth: 0, borderRadius: '2px', overflow: 'hidden', backgroundColor: '#0a0000', cursor: img?.asset ? 'pointer' : 'default' }}
                   >
                     {img?.asset ? (
                       <img
@@ -106,9 +191,6 @@ const GalleryDetail = ({ category }) => {
                       <div style={{ width: '100%', paddingBottom: '100%', background: 'radial-gradient(circle at center, #2a0000 0%, #050505 100%)', position: 'relative' }}>
                         <span style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#333', fontFamily: "'Inter', sans-serif", fontSize: '0.75rem', letterSpacing: '2px', textTransform: 'uppercase' }}>Image {i + 1}</span>
                       </div>
-                    )}
-                    {img.caption && (
-                      <p style={{ margin: 0, padding: '0.6rem 0.75rem', fontFamily: "'Inter', sans-serif", fontSize: '0.7rem', color: '#777', letterSpacing: '0.05em' }}>{img.caption}</p>
                     )}
                   </motion.div>
                 ))

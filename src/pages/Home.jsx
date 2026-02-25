@@ -4,12 +4,21 @@ import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 
 const Home = () => {
-    const [introComplete, setIntroComplete] = useState(false);
+    const skipIntro = typeof window !== 'undefined' && window.location.hash === '#contact';
+    const [introComplete, setIntroComplete] = useState(skipIntro);
 
     useEffect(() => {
+        if (skipIntro) {
+            // Skip intro and scroll straight to contact
+            const timer = setTimeout(() => {
+                const el = document.getElementById('contact');
+                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 150);
+            return () => clearTimeout(timer);
+        }
         const timer = setTimeout(() => {
             setIntroComplete(true);
-        }, 2000); // Intro duration
+        }, 2000);
         return () => clearTimeout(timer);
     }, []);
 

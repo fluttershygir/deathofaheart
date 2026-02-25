@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Sun } from 'lucide-react';
 import { client } from '../sanity/client';
 
@@ -7,6 +7,26 @@ const prefetch = (category) => {
 };
 
 const Navbar = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleContact = (e) => {
+    e.preventDefault();
+    if (location.pathname === '/') {
+      // Already on home — just scroll
+      const el = document.getElementById('contact');
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } else {
+      // On another page — navigate to home with hash so intro is skipped
+      navigate('/#contact');
+      // After navigation, scroll once the DOM settles
+      setTimeout(() => {
+        const el = document.getElementById('contact');
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 300);
+    }
+  };
+
   return (
     <nav style={{
       display: 'flex',
@@ -40,15 +60,7 @@ const Navbar = () => {
           style={{ fontSize: '0.9rem', color: '#ddd', letterSpacing: '2px', textDecoration: 'none', transition: 'color 0.3s', cursor: 'pointer' }} 
           onMouseEnter={(e) => e.target.style.color = '#ff3333'} 
           onMouseLeave={(e) => e.target.style.color = '#ddd'}
-          onClick={(e) => {
-            if (window.location.pathname === '/') {
-              e.preventDefault();
-              const contactSection = document.getElementById('contact');
-              if (contactSection) {
-                contactSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
-              }
-            }
-          }}
+          onClick={handleContact}
         >
           CONTACT
         </a>
