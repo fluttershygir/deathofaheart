@@ -8,18 +8,32 @@ const PLACEHOLDER_COUNT = 4;
 const Concerts = () => {
   const [galleries, setGalleries] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [photographer, setPhotographer] = useState(() => sessionStorage.getItem('doh_person') || '');
+
+  useEffect(() => {
+    const onPersonChange = () => setPhotographer(sessionStorage.getItem('doh_person') || '');
+    window.addEventListener('doh_person_changed', onPersonChange);
+    return () => window.removeEventListener('doh_person_changed', onPersonChange);
+  }, []);
 
   useEffect(() => {
     if (!client) { setLoading(false); return; }
-    client
-      .fetch(
-        `*[_type == "gallery" && category == "concerts"] | order(_createdAt desc) {
+    setLoading(true);
+    const query = photographer
+      ? `*[_type == "gallery" && category == "concerts" && photographer == $photographer] | order(_createdAt desc) {
           _id, title, slug, date,
           "imageCount": count(images),
           "coverImage": coalesce(coverImage, images[0]),
           "lqip": coalesce(coverImage.asset->metadata.lqip, images[0].asset->metadata.lqip)
         }`
-      )
+      : `*[_type == "gallery" && category == "concerts"] | order(_createdAt desc) {
+          _id, title, slug, date,
+          "imageCount": count(images),
+          "coverImage": coalesce(coverImage, images[0]),
+          "lqip": coalesce(coverImage.asset->metadata.lqip, images[0].asset->metadata.lqip)
+        }`;
+    client
+      .fetch(query, photographer ? { photographer } : {})
       .then((data) => {
         setGalleries(data);
         setLoading(false);
@@ -28,7 +42,7 @@ const Concerts = () => {
         console.error("Sanity fetch error:", err);
         setLoading(false);
       });
-  }, []);
+  }, [photographer]);
 
   const items = loading
     ? Array.from({ length: PLACEHOLDER_COUNT }, (_, i) => ({ _id: `ph-${i}`, placeholder: true }))
@@ -58,7 +72,7 @@ const Concerts = () => {
                 style={{ textAlign: 'center', marginBottom: '6rem' }}
             >
                 <h3 style={{ fontSize: '0.9rem', letterSpacing: '0.3em', color: '#aaa', marginBottom: '1.5rem', fontFamily: "'Inter', sans-serif", textTransform: 'uppercase' }}>
-                    Live Music & Energy
+                    {photographer ? `${photographer.charAt(0).toUpperCase() + photographer.slice(1)} — ` : ''}Live Music & Energy
                 </h3>
                 <h1 style={{ 
                     fontSize: 'clamp(4rem, 8vw, 6rem)', 

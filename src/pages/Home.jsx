@@ -6,6 +6,50 @@ import { ArrowRight } from 'lucide-react';
 const Home = () => {
     const skipIntro = typeof window !== 'undefined' && window.location.hash === '#contact';
     const [introComplete, setIntroComplete] = useState(skipIntro);
+    const [selectedPerson, setSelectedPerson] = useState(() => sessionStorage.getItem('doh_person') || null);
+    const [animatingPerson, setAnimatingPerson] = useState(null);
+    const [isTransitioning, setIsTransitioning] = useState(false);
+
+    const selectPerson = (p) => {
+        sessionStorage.setItem('doh_person', p);
+        setSelectedPerson(p);
+        window.dispatchEvent(new Event('doh_person_changed'));
+    };
+
+    const handlePersonClick = (p) => {
+        setAnimatingPerson(p);
+        // Wait for button animation to finish (600ms), then start fading out the page
+        setTimeout(() => {
+            setIsTransitioning(true);
+            // Wait for page to fade to black (500ms), then swap content and fade back in
+            setTimeout(() => {
+                selectPerson(p);
+                setAnimatingPerson(null);
+                setIsTransitioning(false);
+            }, 500);
+        }, 600);
+    };
+
+    // Sync selectedPerson when navbar logo clears it from sessionStorage
+    useEffect(() => {
+        const onPersonChange = () => {
+            const p = sessionStorage.getItem('doh_person') || null;
+            setSelectedPerson(p);
+            if (!p) window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+        window.addEventListener('doh_person_changed', onPersonChange);
+        return () => window.removeEventListener('doh_person_changed', onPersonChange);
+    }, []);
+
+    // Lock scroll until a person is chosen
+    useEffect(() => {
+        if (!selectedPerson) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+        return () => { document.body.style.overflow = ''; };
+    }, [selectedPerson]);
 
     useEffect(() => {
         if (skipIntro) {
@@ -25,10 +69,35 @@ const Home = () => {
     return (
         <div className="home-container" style={{ position: 'relative', minHeight: '100vh', backgroundColor: '#050505', color: '#eee', overflowX: 'hidden' }}>
 
+            {/* Full Page Transition Overlay - does NOT cover the floating title (z-index 10000) */}
+            <AnimatePresence>
+                {isTransitioning && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.5, ease: "easeInOut" }}
+                        style={{
+                            position: 'fixed',
+                            inset: 0,
+                            backgroundColor: '#050505',
+                            zIndex: 9999,
+                            pointerEvents: 'none'
+                        }}
+                    />
+                )}
+            </AnimatePresence>
+
+
+
             {/* Animated Background Glows */}
             <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none', overflow: 'hidden' }}>
                 <motion.div
-                    animate={{ x: [0, 40, 0], y: [0, -30, 0], opacity: [0.35, 0.55, 0.35] }}
+                    animate={{ 
+                        x: [0, 40, 0], 
+                        y: [0, -30, 0], 
+                        opacity: selectedPerson ? [0.35, 0.55, 0.35] : [0.1, 0.2, 0.1] 
+                    }}
                     transition={{ duration: 14, repeat: Infinity, ease: 'easeInOut' }}
                     style={{
                         position: 'absolute',
@@ -37,12 +106,18 @@ const Home = () => {
                         width: '700px',
                         height: '700px',
                         borderRadius: '50%',
-                        background: 'radial-gradient(circle, rgba(140, 0, 0, 0.45) 0%, transparent 70%)',
+                        background: selectedPerson 
+                            ? 'radial-gradient(circle, rgba(140, 0, 0, 0.45) 0%, transparent 70%)'
+                            : 'radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%)',
                         filter: 'blur(80px)'
                     }}
                 />
                 <motion.div
-                    animate={{ x: [0, -30, 0], y: [0, 40, 0], opacity: [0.2, 0.4, 0.2] }}
+                    animate={{ 
+                        x: [0, -30, 0], 
+                        y: [0, 40, 0], 
+                        opacity: selectedPerson ? [0.2, 0.4, 0.2] : [0.05, 0.15, 0.05] 
+                    }}
                     transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut', delay: 4 }}
                     style={{
                         position: 'absolute',
@@ -51,12 +126,18 @@ const Home = () => {
                         width: '500px',
                         height: '500px',
                         borderRadius: '50%',
-                        background: 'radial-gradient(circle, rgba(160, 15, 15, 0.4) 0%, transparent 70%)',
+                        background: selectedPerson
+                            ? 'radial-gradient(circle, rgba(160, 15, 15, 0.4) 0%, transparent 70%)'
+                            : 'radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 70%)',
                         filter: 'blur(100px)'
                     }}
                 />
                 <motion.div
-                    animate={{ scaleX: [1, 1.3, 1], scaleY: [1, 0.8, 1], opacity: [0.1, 0.25, 0.1] }}
+                    animate={{ 
+                        scaleX: [1, 1.3, 1], 
+                        scaleY: [1, 0.8, 1], 
+                        opacity: selectedPerson ? [0.1, 0.25, 0.1] : [0.02, 0.08, 0.02] 
+                    }}
                     transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 7 }}
                     style={{
                         position: 'absolute',
@@ -65,7 +146,9 @@ const Home = () => {
                         width: '900px',
                         height: '250px',
                         borderRadius: '50%',
-                        background: 'radial-gradient(ellipse, rgba(120, 0, 0, 0.3) 0%, transparent 70%)',
+                        background: selectedPerson
+                            ? 'radial-gradient(ellipse, rgba(120, 0, 0, 0.3) 0%, transparent 70%)'
+                            : 'radial-gradient(ellipse, rgba(255, 255, 255, 0.05) 0%, transparent 70%)',
                         filter: 'blur(120px)'
                     }}
                 />
@@ -172,52 +255,82 @@ const Home = () => {
                                 textTransform: 'uppercase'
                             }}
                         >
-                            Concert & Portrait Photography
+                            {selectedPerson
+                                ? `${selectedPerson.charAt(0).toUpperCase() + selectedPerson.slice(1)}'s Portfolio`
+                                : 'Concert & Portrait Photography'}
                         </motion.h3>
                         
-                        <motion.h1 
+                        <motion.h1
                             initial={{ opacity: 0, y: 15 }}
-                            animate={{ 
-                                opacity: introComplete ? 1 : 0, 
-                                y: introComplete ? 0 : 15,
-                            }}
-                            transition={{ duration: 1.2, delay: 1.4, ease: "easeOut" }}
-                            style={{ 
-                                fontSize: 'clamp(5rem, 12vw, 9rem)', 
+                            animate={{ opacity: introComplete ? 1 : 0, y: introComplete ? 0 : 15 }}
+                            transition={{ duration: 1.2, delay: 0.3, ease: 'easeOut' }}
+                            style={{
+                                fontSize: 'clamp(5rem, 12vw, 9rem)',
                                 lineHeight: '0.9',
                                 fontFamily: "'Playfair Display', serif",
-                                marginBottom: '2rem',
                                 fontWeight: '400',
                                 letterSpacing: '-0.02em',
-                                position: 'relative',
-                                filter: 'drop-shadow(0 0 30px rgba(220, 20, 20, 0.35))' // Stunning soft red glow
+                                marginBottom: '2rem',
+                                filter: 'drop-shadow(0 0 30px rgba(220, 20, 20, 0.25))',
+                                textAlign: 'center'
                             }}
                         >
-                            <span style={{
-                                background: 'linear-gradient(135deg, #ff5555 0%, #8b0000 100%)',
-                                WebkitBackgroundClip: 'text',
-                                WebkitTextFillColor: 'transparent',
-                                backgroundClip: 'text',
-                                color: 'transparent',
-                                display: 'inline-block'
-                            }}>
-                                death of
-                            </span>
-                            <br />
-                            <span 
-                                style={{ 
-                                    fontStyle: 'italic', 
-                                    background: 'linear-gradient(135deg, #ff7777 0%, #aa0000 100%)',
-                                    WebkitBackgroundClip: 'text',
-                                    WebkitTextFillColor: 'transparent',
-                                    backgroundClip: 'text',
-                                    color: 'transparent',
-                                    display: 'inline-block',
-                                    paddingRight: '10px' // Prevents italic clipping
-                                }}
-                            >
-                                a heart
-                            </span>
+                            {/* "death of" line — white fades out, red fades in */}
+                            <div style={{ position: 'relative', display: 'block' }}>
+                                <motion.span
+                                    animate={{ opacity: animatingPerson || selectedPerson ? 0 : 1 }}
+                                    transition={{ duration: 0.7, ease: 'easeInOut' }}
+                                    style={{
+                                        position: 'absolute', inset: 0,
+                                        color: '#ffffff',
+                                        display: 'block',
+                                        paddingRight: '0.2em'
+                                    }}
+                                >death of</motion.span>
+                                <motion.span
+                                    animate={{ opacity: animatingPerson || selectedPerson ? 1 : 0 }}
+                                    transition={{ duration: 0.7, ease: 'easeInOut' }}
+                                    style={{
+                                        position: 'absolute', inset: 0,
+                                        background: 'linear-gradient(135deg, #ff5555 0%, #8b0000 100%)',
+                                        WebkitBackgroundClip: 'text',
+                                        WebkitTextFillColor: 'transparent',
+                                        backgroundClip: 'text',
+                                        display: 'block',
+                                        paddingRight: '0.2em'
+                                    }}
+                                >death of</motion.span>
+                                <span style={{ visibility: 'hidden', display: 'block', paddingRight: '0.2em' }}>death of</span>
+                            </div>
+                            {/* "a heart" line — white fades out, red fades in */}
+                            <div style={{ position: 'relative', display: 'block' }}>
+                                <motion.span
+                                    animate={{ opacity: animatingPerson || selectedPerson ? 0 : 1 }}
+                                    transition={{ duration: 0.7, ease: 'easeInOut' }}
+                                    style={{
+                                        position: 'absolute', inset: 0,
+                                        color: '#ffffff',
+                                        fontStyle: 'italic',
+                                        display: 'block',
+                                        paddingRight: '10px'
+                                    }}
+                                >a heart</motion.span>
+                                <motion.span
+                                    animate={{ opacity: animatingPerson || selectedPerson ? 1 : 0 }}
+                                    transition={{ duration: 0.7, ease: 'easeInOut' }}
+                                    style={{
+                                        position: 'absolute', inset: 0,
+                                        fontStyle: 'italic',
+                                        background: 'linear-gradient(135deg, #ff7777 0%, #aa0000 100%)',
+                                        WebkitBackgroundClip: 'text',
+                                        WebkitTextFillColor: 'transparent',
+                                        backgroundClip: 'text',
+                                        display: 'block',
+                                        paddingRight: '10px'
+                                    }}
+                                >a heart</motion.span>
+                                <span style={{ visibility: 'hidden', fontStyle: 'italic', display: 'block', paddingRight: '10px' }}>a heart</span>
+                            </div>
                         </motion.h1>
 
                         <motion.p 
@@ -235,16 +348,132 @@ const Home = () => {
                         >
                             Capturing the raw emotion of sound and silence.
                         </motion.p>
+
+                        {/* Person Selector */}
+                        <AnimatePresence mode="wait">
+                            {introComplete && !selectedPerson && !animatingPerson && !isTransitioning && (
+                                <motion.div
+                                    key="person-selector"
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -10 }}
+                                    transition={{ duration: 0.8, delay: 0.5 }}
+                                    style={{ display: 'flex', gap: '1.5rem', marginTop: '2.5rem', flexWrap: 'wrap', justifyContent: 'center' }}
+                                >
+                                    {['shay', 'danica'].map((name) => {
+                                        const isSelected = animatingPerson === name;
+                                        const isOtherSelected = animatingPerson && animatingPerson !== name;
+
+                                        return (
+                                            <motion.button
+                                                key={name}
+                                                onClick={() => !animatingPerson && handlePersonClick(name)}
+                                                animate={{
+                                                    opacity: isOtherSelected ? 0 : 1,
+                                                    scale: isSelected ? 1.05 : isOtherSelected ? 0.95 : 1,
+                                                    borderColor: isSelected ? '#8b0000' : '#333',
+                                                    color: isSelected ? '#ff5555' : '#eee',
+                                                    boxShadow: isSelected ? '0 0 30px rgba(139,0,0,0.4)' : 'none',
+                                                    letterSpacing: isSelected ? '0.15em' : '0.05em',
+                                                    filter: isOtherSelected ? 'blur(4px)' : 'blur(0px)'
+                                                }}
+                                                transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+                                                whileHover={!animatingPerson ? { 
+                                                    scale: 1.05, 
+                                                    backgroundColor: 'rgba(139, 0, 0, 0.05)',
+                                                    y: -2
+                                                } : {}}
+                                                whileTap={!animatingPerson ? { 
+                                                    scale: 0.95, 
+                                                    backgroundColor: 'rgba(139, 0, 0, 0.15)',
+                                                    y: 2,
+                                                    transition: { duration: 0.1 }
+                                                } : {}}
+                                                style={{
+                                                    background: 'transparent',
+                                                    border: '1px solid #333',
+                                                    color: '#eee',
+                                                    padding: '1rem 3rem',
+                                                    fontSize: '1.3rem',
+                                                    fontFamily: "'Playfair Display', serif",
+                                                    fontStyle: 'italic',
+                                                    cursor: animatingPerson ? 'default' : 'pointer',
+                                                    display: 'inline-flex',
+                                                    alignItems: 'center',
+                                                    gap: '0.8rem',
+                                                    borderRadius: '4px',
+                                                    transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease'
+                                                }}
+                                                onMouseEnter={(e) => {
+                                                    if (animatingPerson) return;
+                                                    e.currentTarget.style.borderColor = '#8b0000';
+                                                    e.currentTarget.style.color = '#ff5555';
+                                                    e.currentTarget.style.boxShadow = '0 8px 25px rgba(139,0,0,0.25)';
+                                                }}
+                                                onMouseLeave={(e) => {
+                                                    if (animatingPerson) return;
+                                                    e.currentTarget.style.borderColor = '#333';
+                                                    e.currentTarget.style.color = '#eee';
+                                                    e.currentTarget.style.boxShadow = 'none';
+                                                }}
+                                            >
+                                                {name.charAt(0).toUpperCase() + name.slice(1)} 
+                                                <motion.div
+                                                    animate={{ x: isSelected ? 10 : 0 }}
+                                                    transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+                                                >
+                                                    <ArrowRight size={16} />
+                                                </motion.div>
+                                            </motion.button>
+                                        );
+                                    })}
+                                </motion.div>
+                            )}
+                            {introComplete && selectedPerson && (
+                                <motion.div
+                                    key="switch-person"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                    transition={{ duration: 0.6, delay: 0.4 }}
+                                    style={{ marginTop: '1.5rem' }}
+                                >
+                                    <button
+                                        onClick={() => {
+                                            sessionStorage.removeItem('doh_person');
+                                            setSelectedPerson(null);
+                                            window.dispatchEvent(new Event('doh_person_changed'));
+                                        }}
+                                        style={{
+                                            background: 'transparent',
+                                            border: 'none',
+                                            color: '#3a3a3a',
+                                            fontSize: '0.7rem',
+                                            fontFamily: "'Inter', sans-serif",
+                                            letterSpacing: '0.2em',
+                                            textTransform: 'uppercase',
+                                            cursor: 'pointer',
+                                            padding: '0.5rem',
+                                            transition: 'color 0.3s'
+                                        }}
+                                        onMouseEnter={(e) => e.currentTarget.style.color = '#777'}
+                                        onMouseLeave={(e) => e.currentTarget.style.color = '#3a3a3a'}
+                                    >
+                                        ← switch portfolio
+                                    </button>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
                     </div>
                     
-                    {/* Scroll Indicator */}
-                    <motion.div
+                    {/* Scroll Indicator - only visible once a person is selected */}
+                    {selectedPerson && <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: introComplete ? 1 : 0 }}
                         transition={{ delay: 2, duration: 1 }}
                         style={{
                             position: 'absolute',
-                            bottom: '10vh', // Moved up to be visible on screen
+                            bottom: '10vh',
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
@@ -257,10 +486,11 @@ const Home = () => {
                             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
                             style={{ width: '1px', height: '40px', backgroundColor: '#8b0000' }}
                         ></motion.div>
-                    </motion.div>
+                    </motion.div>}
                 </div>
 
-                {/* Navigation Buttons Section */}
+                {/* Navigation Buttons Section — only after person selected */}
+                {selectedPerson && <>
                 <div style={{ width: '100%', maxWidth: '1400px', padding: '0 2rem 8rem 2rem' }}>
                     <div style={{ 
                         display: 'grid', 
@@ -628,6 +858,7 @@ const Home = () => {
                         © 2026 deathofaheart. All rights reserved.
                     </p>
                 </footer>
+                </> /* end selectedPerson block */}
 
             </motion.div>
         </div>

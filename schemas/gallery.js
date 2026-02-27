@@ -25,6 +25,20 @@ export const gallerySchema = {
       validation: (Rule) => Rule.required().error('Choose a category'),
     },
     {
+      name: 'photographer',
+      title: 'Photographer',
+      type: 'string',
+      description: 'Which photographer does this gallery belong to?',
+      options: {
+        list: [
+          { title: '📸 Shay', value: 'shay' },
+          { title: '📸 Danica', value: 'danica' },
+        ],
+        layout: 'radio',
+      },
+      validation: (Rule) => Rule.required().error('Choose a photographer'),
+    },
+    {
       name: 'slug',
       title: 'URL Slug (auto-generated)',
       type: 'slug',
@@ -77,12 +91,15 @@ export const gallerySchema = {
     select: {
       title: 'title',
       category: 'category',
+      photographer: 'photographer',
       media: 'coverImage',
     },
-    prepare({ title, category, media }) {
+    prepare({ title, category, photographer, media }) {
+      const cat = category ? category.charAt(0).toUpperCase() + category.slice(1) : '';
+      const person = photographer ? photographer.charAt(0).toUpperCase() + photographer.slice(1) : '';
       return {
         title,
-        subtitle: category ? category.charAt(0).toUpperCase() + category.slice(1) : '',
+        subtitle: [person, cat].filter(Boolean).join(' — '),
         media,
       };
     },
