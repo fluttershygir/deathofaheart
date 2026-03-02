@@ -54,7 +54,7 @@ const GalleryDetail = ({ category }) => {
   const back = category === 'concerts' ? '/concerts' : '/portraits';
 
   return (
-    <div style={{ position: 'relative', minHeight: '100vh', backgroundColor: '#050505', color: '#eee', overflowX: 'hidden' }}>
+    <div style={{ position: 'relative', minHeight: '100vh', backgroundColor: '#050505', color: '#eee' }}>
 
       {/* Lightbox */}
       <AnimatePresence>

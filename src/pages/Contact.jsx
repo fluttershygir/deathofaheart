@@ -12,7 +12,6 @@ const Contact = () => {
       paddingLeft: 'max(1.5rem, env(safe-area-inset-left, 0px))',
       paddingRight: 'max(1.5rem, env(safe-area-inset-right, 0px))',
       boxSizing: 'border-box',
-      overflowX: 'hidden',
       backgroundColor: '#050505',
       color: '#fff'
     }}>
@@ -32,7 +31,7 @@ const Contact = () => {
         className="contact-container"
       >
         <div>
-            <h1 style={{ 
+            <h1 className="contact-heading" style={{ 
                 fontFamily: "'Playfair Display', serif", 
                 fontSize: '4rem', 
                 lineHeight: '1',
@@ -42,7 +41,7 @@ const Contact = () => {
                 Let's<br/>
                 <span style={{ fontStyle: 'italic', color: '#666' }}>create.</span>
             </h1>
-            <p style={{ color: '#888', lineHeight: '1.6', marginBottom: '2rem' }}>
+            <p className="contact-subtext" style={{ color: '#888', lineHeight: '1.6', marginBottom: '2rem' }}>
                 Available for touring, festivals, and portrait sessions worldwide.
                 Drop me a line and let's discuss your vision.
             </p>
@@ -55,7 +54,7 @@ const Contact = () => {
             </div>
         </div>
 
-        <form action="https://formsubmit.co/shay7storey@gmail.com" method="POST" style={{ display: 'flex', flexDirection: 'column', gap: '2rem', marginTop: '1rem' }}>
+        <form action="https://formsubmit.co/shay7storey@gmail.com" method="POST" className="contact-form-fields" style={{ display: 'flex', flexDirection: 'column', gap: '2rem', marginTop: '1rem' }}>
           <div className="input-group">
               <input 
                 name="name"

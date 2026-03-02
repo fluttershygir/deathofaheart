@@ -85,7 +85,7 @@ const Home = () => {
     }, []);
 
     return (
-        <div className="home-container" style={{ position: 'relative', minHeight: '100vh', backgroundColor: '#050505', color: '#eee', overflowX: 'hidden' }}>
+        <div className="home-container" style={{ position: 'relative', minHeight: '100vh', backgroundColor: '#050505', color: '#eee' }}>
 
             {/* Full Page Transition Overlay - does NOT cover the floating title (z-index 10000) */}
             <AnimatePresence>

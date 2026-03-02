@@ -49,7 +49,7 @@ const Concerts = () => {
     : galleries;
 
   return (
-    <div style={{ position: 'relative', minHeight: '100vh', backgroundColor: '#050505', color: '#eee', overflowX: 'hidden', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ position: 'relative', minHeight: '100vh', backgroundColor: '#050505', color: '#eee', display: 'flex', flexDirection: 'column' }}>
         {/* Animated Background Glows */}
         <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none', overflow: 'hidden' }}>
             <motion.div
