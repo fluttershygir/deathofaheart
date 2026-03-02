@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Sun } from 'lucide-react';
 import { client } from '../sanity/client';
 
 const prefetch = (category) => {
@@ -48,13 +47,13 @@ const Navbar = () => {
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
-      padding: '2rem 3rem',
-      position: location.pathname === '/' ? 'relative' : 'fixed',
+      padding: 'max(1.5rem, env(safe-area-inset-top, 1.5rem)) 3rem 1.5rem',
+      position: 'fixed',
       top: 0,
       left: 0,
       width: '100%',
-      zIndex: 50,
-      mixBlendMode: 'difference'
+      boxSizing: 'border-box',
+      zIndex: 50
     }}>
       <div className="logo">
         <a href="/" onClick={handleLogoClick} style={{ 
@@ -87,7 +86,6 @@ const Navbar = () => {
             </a>
           </>
         )}
-        <Sun size={18} color="#ddd" style={{ cursor: 'pointer', marginLeft: '1rem', transition: 'color 0.3s' }} onMouseEnter={(e) => e.target.style.color = '#ff3333'} onMouseLeave={(e) => e.target.style.color = '#ddd'} />
       </div>
     </nav>
   );

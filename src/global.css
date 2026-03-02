@@ -13,10 +13,15 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+html {
+  overflow-x: hidden;
+}
+
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  overflow-x: hidden;
   background-color: #050505;
   color: #eeeeee;
 }
@@ -103,10 +108,33 @@ h1, h2, h3 {
     padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
+/* Contact form inputs — prevent overflow on mobile */
+.input-group input,
+.input-group textarea {
+    box-sizing: border-box;
+}
+
 @media (max-width: 768px) {
     .contact-grid {
         grid-template-columns: 1fr !important;
         gap: 3rem !important;
+    }
+
+    /* Contact page (/contact) — collapse the 2-col grid */
+    .contact-container {
+        grid-template-columns: 1fr !important;
+        gap: 2.5rem !important;
+        padding-left: 1.5rem !important;
+        padding-right: 1.5rem !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Home page contact section — similar fix */
+    #contact.contact-container {
+        padding-left: 1.5rem !important;
+        padding-right: 1.5rem !important;
     }
 
     .gallery-grid {

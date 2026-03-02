@@ -18,6 +18,8 @@ const Home = () => {
 
     const handlePersonClick = (p) => {
         setAnimatingPerson(p);
+        // Push a history entry so iOS back button returns to the person chooser
+        window.history.pushState({ dohPerson: p }, '', '/');
         // Wait for button animation to finish (600ms), then start fading out the page
         setTimeout(() => {
             setIsTransitioning(true);
@@ -29,6 +31,22 @@ const Home = () => {
             }, 500);
         }, 600);
     };
+
+    // iOS back button: clear the person when the user presses back
+    useEffect(() => {
+        const onPopState = () => {
+            const current = sessionStorage.getItem('doh_person');
+            if (current) {
+                sessionStorage.removeItem('doh_person');
+                setSelectedPerson(null);
+                setAnimatingPerson(null);
+                window.dispatchEvent(new Event('doh_person_changed'));
+                window.scrollTo({ top: 0 });
+            }
+        };
+        window.addEventListener('popstate', onPopState);
+        return () => window.removeEventListener('popstate', onPopState);
+    }, []);
 
     // Sync selectedPerson when navbar logo clears it from sessionStorage
     useEffect(() => {
@@ -233,7 +251,8 @@ const Home = () => {
                     alignItems: 'center', 
                     textAlign: 'center',
                     width: '100%',
-                    padding: '2rem'
+                    padding: '2rem',
+                    paddingTop: 'max(90px, calc(70px + env(safe-area-inset-top, 0px)))'
                 }}>
                     <div style={{ marginBottom: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                         <motion.h3 

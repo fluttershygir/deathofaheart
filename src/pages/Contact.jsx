@@ -9,6 +9,10 @@ const Contact = () => {
       justifyContent: 'center', 
       minHeight: '100vh', 
       paddingTop: '100px',
+      paddingLeft: 'max(1.5rem, env(safe-area-inset-left, 0px))',
+      paddingRight: 'max(1.5rem, env(safe-area-inset-right, 0px))',
+      boxSizing: 'border-box',
+      overflowX: 'hidden',
       backgroundColor: '#050505',
       color: '#fff'
     }}>
