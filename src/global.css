@@ -15,6 +15,7 @@
 
 html {
   overflow-x: hidden;
+  overflow-y: scroll; /* always show scrollbar — prevents layout shift when body overflow toggles */
   scrollbar-gutter: stable;
 }
 
