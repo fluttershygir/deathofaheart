@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
+import { client } from '../sanity/client';
 
 const Home = () => {
     const skipIntro = typeof window !== 'undefined' && window.location.hash === '#contact';
@@ -9,6 +10,22 @@ const Home = () => {
     const [selectedPerson, setSelectedPerson] = useState(() => sessionStorage.getItem('doh_person') || null);
     const [animatingPerson, setAnimatingPerson] = useState(null);
     const [isTransitioning, setIsTransitioning] = useState(false);
+    const [profiles, setProfiles] = useState({});
+
+    // Fetch photographer profiles from Sanity
+    useEffect(() => {
+        if (!client) return;
+        client.fetch(`*[_type == "photographerProfile"]{ name, displayName, tagline, heroBio, contactSubtext, basedIn, email, instagramHandle }`)
+            .then((data) => {
+                const map = {};
+                data.forEach((p) => { map[p.name] = p; });
+                setProfiles(map);
+            })
+            .catch(() => {}); // silently fall back to defaults if Sanity is unavailable
+    }, []);
+
+    // Resolved profile for whoever is currently selected
+    const activeProfile = profiles[selectedPerson] || {};
 
     const selectPerson = (p) => {
         sessionStorage.setItem('doh_person', p);
@@ -270,7 +287,7 @@ const Home = () => {
                             }}
                         >
                             {selectedPerson
-                                ? `${selectedPerson.charAt(0).toUpperCase() + selectedPerson.slice(1)}'s Portfolio`
+                                ? (activeProfile.tagline || `${selectedPerson.charAt(0).toUpperCase() + selectedPerson.slice(1)}'s Portfolio`)
                                 : 'Concert & Portrait Photography'}
                         </motion.h3>
                         
@@ -359,7 +376,7 @@ const Home = () => {
                                 fontStyle: 'italic'
                             }}
                         >
-                            Capturing the raw emotion of sound and silence.
+                            {activeProfile.heroBio || 'Capturing the raw emotion of sound and silence.'}
                         </motion.p>
 
                         {/* Person Selector */}
@@ -638,12 +655,12 @@ const Home = () => {
                     >
                         <div>
                             <p style={{ color: '#aaa', fontSize: '1.1rem', lineHeight: '1.6', marginBottom: '0', fontFamily: "'Playfair Display', serif", fontStyle: 'italic' }}>
-                                Whether it's the energy of a live show or the quiet intimacy of a portrait, I'd love to help bring your vision to life.
+                                {activeProfile.contactSubtext || "Whether it's the energy of a live show or the quiet intimacy of a portrait, I'd love to help bring your vision to life."}
                             </p>
                         </div>
 
                         <form
-                            action="https://formsubmit.co/hello@deathofaheart.com"
+                            action={`https://formsubmit.co/${activeProfile.email || 'hello@deathofaheart.com'}`}
                             method="POST"
                             style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}
                         >
@@ -761,7 +778,7 @@ const Home = () => {
                         }}
                     >
                         <a 
-                            href="mailto:hello@deathofaheart.com" 
+                            href={`mailto:${activeProfile.email || 'hello@deathofaheart.com'}`} 
                             className="social-pill-btn"
                             style={{ 
                                 color: '#fff', 
@@ -803,7 +820,7 @@ const Home = () => {
                             Email
                         </a>
                         <a 
-                            href="https://www.instagram.com/suchislifeisuppose" 
+                            href={`https://www.instagram.com/${activeProfile.instagramHandle || 'suchislifeisuppose'}`} 
                             target="_blank" 
                             rel="noopener noreferrer"
                             className="social-pill-btn"

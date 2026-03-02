@@ -1,6 +1,17 @@
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { client } from '../sanity/client';
 
 const Contact = () => {
+  const [profile, setProfile] = useState({});
+
+  useEffect(() => {
+    if (!client) return;
+    client.fetch(`*[_type == "photographerProfile" && name == "shay"][0]{ displayName, contactSubtext, basedIn, email, instagramHandle }`)
+      .then((data) => { if (data) setProfile(data); })
+      .catch(() => {});
+  }, []);
+
   return (
     <div className="layout" style={{ 
       display: 'flex', 
@@ -42,19 +53,18 @@ const Contact = () => {
                 <span style={{ fontStyle: 'italic', color: '#666' }}>create.</span>
             </h1>
             <p className="contact-subtext" style={{ color: '#888', lineHeight: '1.6', marginBottom: '2rem' }}>
-                Available for touring, festivals, and portrait sessions worldwide.
-                Drop me a line and let's discuss your vision.
+                {profile.contactSubtext || 'Available for touring, festivals, and portrait sessions worldwide. Drop me a line and let\'s discuss your vision.'}
             </p>
             <div style={{ fontSize: '0.9rem', color: '#666' }}>
                 <p>Based in:</p>
-                <p style={{ color: '#fff', marginBottom: '1rem' }}>Los Angeles, CA</p>
+                <p style={{ color: '#fff', marginBottom: '1rem' }}>{profile.basedIn || 'Los Angeles, CA'}</p>
                 
                 <p>Email:</p>
-                <a href="mailto:shay7storey@gmail.com" style={{ color: '#fff', textDecoration: 'none' }}>shay7storey@gmail.com</a>
+                <a href={`mailto:${profile.email || 'shay7storey@gmail.com'}`} style={{ color: '#fff', textDecoration: 'none' }}>{profile.email || 'shay7storey@gmail.com'}</a>
             </div>
         </div>
 
-        <form action="https://formsubmit.co/shay7storey@gmail.com" method="POST" className="contact-form-fields" style={{ display: 'flex', flexDirection: 'column', gap: '2rem', marginTop: '1rem' }}>
+        <form action={`https://formsubmit.co/${profile.email || 'shay7storey@gmail.com'}`} method="POST" className="contact-form-fields" style={{ display: 'flex', flexDirection: 'column', gap: '2rem', marginTop: '1rem' }}>
           <div className="input-group">
               <input 
                 name="name"
