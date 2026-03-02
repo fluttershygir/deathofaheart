@@ -119,7 +119,8 @@ const GalleryDetail = ({ category }) => {
         <motion.div
           animate={{ x: [0, 30, 0], y: [0, -20, 0], opacity: [0.2, 0.4, 0.2] }}
           transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
-          style={{ position: 'absolute', top: '10%', left: '10%', width: '600px', height: '600px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(140, 0, 0, 0.3) 0%, transparent 70%)', filter: 'blur(80px)' }}
+            className="bg-blob"
+            style={{ position: 'absolute', top: '10%', left: '10%', width: '600px', height: '600px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(140, 0, 0, 0.3) 0%, transparent 70%)', filter: 'blur(80px)' }}
         />
       </div>
 
@@ -177,7 +178,7 @@ const GalleryDetail = ({ category }) => {
                     whileHover={{ scale: 1.02, boxShadow: '0 20px 40px rgba(139, 0, 0, 0.4)' }}
                     transition={{ duration: 0.4, ease: 'easeOut' }}
                     onClick={() => img?.asset && openLightbox(i)}
-                    style={{ flex: '0 0 calc(33.333% - 1rem)', minWidth: 0, borderRadius: '2px', overflow: 'hidden', backgroundColor: '#0a0000', cursor: img?.asset ? 'pointer' : 'default' }}
+                    className="gallery-grid-item" style={{ flex: '0 0 calc(33.333% - 1rem)', minWidth: 0, borderRadius: '2px', overflow: 'hidden', backgroundColor: '#0a0000', cursor: img?.asset ? 'pointer' : 'default' }}
                   >
                     {img?.asset ? (
                       <img
@@ -223,3 +224,5 @@ const GalleryDetail = ({ category }) => {
 };
 
 export default GalleryDetail;
+
+

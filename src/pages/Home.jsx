@@ -99,12 +99,11 @@ const Home = () => {
                         opacity: selectedPerson ? [0.35, 0.55, 0.35] : [0.1, 0.2, 0.1] 
                     }}
                     transition={{ duration: 14, repeat: Infinity, ease: 'easeInOut' }}
-                    style={{
+                    className="bg-blob" style={{
                         position: 'absolute',
                         top: '15%',
                         left: '5%',
-                        width: '700px',
-                        height: '700px',
+                        width: '700px', height: '700px',
                         borderRadius: '50%',
                         background: selectedPerson 
                             ? 'radial-gradient(circle, rgba(140, 0, 0, 0.45) 0%, transparent 70%)'
@@ -119,12 +118,11 @@ const Home = () => {
                         opacity: selectedPerson ? [0.2, 0.4, 0.2] : [0.05, 0.15, 0.05] 
                     }}
                     transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut', delay: 4 }}
-                    style={{
+                    className="bg-blob" style={{
                         position: 'absolute',
                         bottom: '5%',
                         right: '10%',
-                        width: '500px',
-                        height: '500px',
+                        width: '500px', height: '500px',
                         borderRadius: '50%',
                         background: selectedPerson
                             ? 'radial-gradient(circle, rgba(160, 15, 15, 0.4) 0%, transparent 70%)'
@@ -139,12 +137,11 @@ const Home = () => {
                         opacity: selectedPerson ? [0.1, 0.25, 0.1] : [0.02, 0.08, 0.02] 
                     }}
                     transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 7 }}
-                    style={{
+                    className="bg-blob" style={{
                         position: 'absolute',
                         top: '45%',
                         left: '30%',
-                        width: '900px',
-                        height: '250px',
+                        width: '900px', height: '250px',
                         borderRadius: '50%',
                         background: selectedPerson
                             ? 'radial-gradient(ellipse, rgba(120, 0, 0, 0.3) 0%, transparent 70%)'
@@ -176,8 +173,7 @@ const Home = () => {
                         }}
                     >
                         <motion.h1
-                            style={{ 
-                                fontSize: 'clamp(2rem, 4vw, 3rem)',
+                            className="intro-title" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)',
                                 letterSpacing: '0.1em',
                                 fontFamily: "'Playfair Display', serif",
                                 fontStyle: 'italic',
@@ -264,8 +260,7 @@ const Home = () => {
                             initial={{ opacity: 0, y: 15 }}
                             animate={{ opacity: introComplete ? 1 : 0, y: introComplete ? 0 : 15 }}
                             transition={{ duration: 1.2, delay: 0.3, ease: 'easeOut' }}
-                            style={{
-                                fontSize: 'clamp(5rem, 12vw, 9rem)',
+                            className="hero-title" style={{ fontSize: 'clamp(3rem, 12vw, 9rem)',
                                 lineHeight: '0.9',
                                 fontFamily: "'Playfair Display', serif",
                                 fontWeight: '400',
@@ -597,7 +592,7 @@ const Home = () => {
                 </div>
 
                 {/* Contact Form Section */}
-                <div id="contact" style={{ width: '100%', maxWidth: '900px', padding: '8rem 2rem 10rem 2rem', minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                <div id="contact" className="contact-container" style={{ width: '100%', maxWidth: '900px', padding: '8rem 2rem 10rem 2rem', minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                     <motion.div
                         initial={{ opacity: 0, y: 60 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -866,3 +861,6 @@ const Home = () => {
 };
 
 export default Home;
+
+
+

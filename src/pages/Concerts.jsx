@@ -55,12 +55,12 @@ const Concerts = () => {
             <motion.div
                 animate={{ x: [0, 30, 0], y: [0, -20, 0], opacity: [0.2, 0.4, 0.2] }}
                 transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
-                style={{ position: 'absolute', top: '10%', left: '10%', width: '600px', height: '600px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(140, 0, 0, 0.3) 0%, transparent 70%)', filter: 'blur(80px)' }}
+                className="bg-blob" style={{ position: 'absolute', top: '10%', left: '10%' }}
             />
             <motion.div
                 animate={{ x: [0, -20, 0], y: [0, 30, 0], opacity: [0.15, 0.3, 0.15] }}
                 transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
-                style={{ position: 'absolute', bottom: '10%', right: '5%', width: '500px', height: '500px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(160, 15, 15, 0.25) 0%, transparent 70%)', filter: 'blur(100px)' }}
+                className="bg-blob" style={{ position: 'absolute', bottom: '10%', right: '5%' }}
             />
         </div>
 
@@ -160,7 +160,7 @@ const Concerts = () => {
                     variants={{ hidden: { opacity: 0, y: 40 }, visible: { opacity: 1, y: 0 } }}
                     whileHover={{ scale: 1.02, boxShadow: '0 24px 48px rgba(139, 0, 0, 0.45)' }}
                     transition={{ duration: 0.4, ease: 'easeOut' }}
-                    style={{ flex: '0 0 calc(33.333% - 1rem)', minWidth: 0 }}
+                    className="gallery-grid-item" style={{ flex: '0 0 calc(33.333% - 1rem)', minWidth: 0 }}
                   >
                     {gallery.placeholder ? inner : (
                       <Link to={`/concerts/${gallery.slug?.current}`} style={{ textDecoration: 'none', display: 'block' }}>
@@ -185,3 +185,6 @@ const Concerts = () => {
 };
 
 export default Concerts;
+
+
+

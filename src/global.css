@@ -79,4 +79,63 @@ h1, h2, h3 {
         grid-template-columns: 1fr !important;
         gap: 3rem !important;
     }
+
+    .gallery-grid {
+        grid-template-columns: 1fr !important;
+    }
+    .gallery-grid-item {
+        flex: 1 1 100% !important;
+        max-width: 100% !important;
+    }
+    .bg-blob {
+        width: 100vw !important;
+        max-width: 300px !important;
+        height: 300px !important;
+    }
+    .image-detail-container {
+        padding: 1rem !important;
+    }
+    .mobile-px-1 {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+
+    .nav-container {
+        padding: 1.5rem !important;
+        flex-direction: column !important;
+        gap: 1rem !important;
+    }
+
+    .nav-links {
+        gap: 1.5rem !important;
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+    }
+
+    .nav-card {
+        height: 300px !important;
+    }
+
+    .nav-card h2 {
+        font-size: 2.5rem !important;
+    }
+
+    /* Adjust main content padding */
+    .layout {
+        padding: 1.5rem !important;
+    }
+
+    .intro-title {
+        font-size: clamp(2.5rem, 8vw, 4rem) !important;
+    }
+
+    .hero-title {
+        font-size: 3rem !important;
+    }
+
+    .contact-container {
+        padding: 4rem 1.5rem !important;
+    }
 }
+
+

@@ -44,7 +44,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav style={{
+    <nav className="nav-container" style={{
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
@@ -70,7 +70,7 @@ const Navbar = () => {
           deathofaheart
         </a>
       </div>
-      <div className="links" style={{ display: 'flex', gap: '3rem', alignItems: 'center' }}>
+      <div className="nav-links" style={{ display: 'flex', gap: '3rem', alignItems: 'center' }}>
         {selectedPerson && (
           <>
             <Link to="/concerts" className="nav-link" style={{ fontSize: '0.9rem', color: '#ddd', letterSpacing: '2px', transition: 'color 0.3s' }} onMouseEnter={(e) => { e.target.style.color = '#ff3333'; prefetch('concerts'); }} onMouseLeave={(e) => e.target.style.color = '#ddd'}>CONCERTS</Link>
@@ -94,3 +94,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+

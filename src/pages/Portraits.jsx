@@ -160,7 +160,7 @@ const Portraits = () => {
                     variants={{ hidden: { opacity: 0, y: 40 }, visible: { opacity: 1, y: 0 } }}
                     whileHover={{ scale: 1.02, boxShadow: '0 24px 48px rgba(139, 0, 0, 0.45)' }}
                     transition={{ duration: 0.4, ease: 'easeOut' }}
-                    style={{ flex: '0 0 calc(33.333% - 1rem)', minWidth: 0 }}
+                    className="gallery-grid-item" style={{ flex: '0 0 calc(33.333% - 1rem)', minWidth: 0 }}
                   >
                     {gallery.placeholder ? inner : (
                       <Link to={`/portraits/${gallery.slug?.current}`} style={{ textDecoration: 'none', display: 'block' }}>
@@ -185,3 +185,4 @@ const Portraits = () => {
 };
 
 export default Portraits;
+
