@@ -52,7 +52,7 @@ h1, h2, h3 {
     padding: 2rem;
 }
 
-/* NAVBAR — always fixed, always on top, dark bg so content can't bleed through */
+/* NAVBAR — always fixed, always on top */
 .nav-container {
     position: fixed !important;
     top: 0 !important;
@@ -60,10 +60,40 @@ h1, h2, h3 {
     right: 0 !important;
     width: 100% !important;
     box-sizing: border-box !important;
-    background-color: rgba(5, 5, 5, 0.97) !important;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    background: transparent !important;
     z-index: 1000 !important;
+}
+
+/* Fade from black behind nav text, dissolving to transparent below */
+.nav-container::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to bottom,
+        rgba(5, 5, 5, 0.98) 0%,
+        rgba(5, 5, 5, 0.92) 55%,
+        rgba(5, 5, 5, 0.0) 100%
+    );
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Extend the fade below the nav bar itself */
+.nav-container::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: linear-gradient(
+        to bottom,
+        rgba(5, 5, 5, 0.0) 0%,
+        transparent 100%
+    );
+    pointer-events: none;
+    z-index: -1;
 }
 
 .nav-card {
