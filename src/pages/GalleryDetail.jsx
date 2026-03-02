@@ -99,7 +99,7 @@ const GalleryDetail = ({ category }) => {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.97 }}
               transition={{ duration: 0.25 }}
-              src={urlFor(images[lightbox]).width(1600).auto('format').quality(90).url()}
+              src={urlFor(images[lightbox]).width(2400).quality(100).url()}
               alt={images[lightbox].caption || `Image ${lightbox + 1}`}
               onClick={e => e.stopPropagation()}
               style={{ maxWidth: '90vw', maxHeight: '80vh', objectFit: 'contain', display: 'block' }}
