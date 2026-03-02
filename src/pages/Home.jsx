@@ -603,7 +603,7 @@ const Home = () => {
                 </div>
 
                 {/* Contact Form Section */}
-                <div id="contact" className="contact-container" style={{ width: '100%', maxWidth: '900px', padding: '8rem 2rem 10rem 2rem', minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                <div id="contact" className="contact-container" style={{ width: '100%', maxWidth: '900px', padding: '4rem 2rem 6rem 2rem', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                     <motion.div
                         initial={{ opacity: 0, y: 60 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -612,9 +612,9 @@ const Home = () => {
                     >
                         <h2 style={{
                             fontFamily: "'Playfair Display', serif",
-                            fontSize: 'clamp(3rem, 6vw, 5rem)',
+                            fontSize: 'clamp(2.5rem, 5vw, 4rem)',
                             lineHeight: '1',
-                            marginBottom: '4rem',
+                            marginBottom: '1.5rem',
                             color: '#fff',
                             fontWeight: '400'
                         }}>
@@ -631,13 +631,13 @@ const Home = () => {
                         style={{
                             display: 'grid',
                             gridTemplateColumns: '1fr 1.5fr',
-                            gap: '6rem',
+                            gap: '3rem',
                             alignItems: 'start'
                         }}
                         className="contact-grid"
                     >
                         <div>
-                            <p style={{ color: '#aaa', fontSize: '1.8rem', lineHeight: '1.6', marginBottom: '2.5rem', fontFamily: "'Playfair Display', serif", fontStyle: 'italic' }}>
+                            <p style={{ color: '#aaa', fontSize: '1.1rem', lineHeight: '1.6', marginBottom: '0', fontFamily: "'Playfair Display', serif", fontStyle: 'italic' }}>
                                 Whether it's the energy of a live show or the quiet intimacy of a portrait, I'd love to help bring your vision to life.
                             </p>
                         </div>
@@ -645,7 +645,7 @@ const Home = () => {
                         <form
                             action="https://formsubmit.co/hello@deathofaheart.com"
                             method="POST"
-                            style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}
+                            style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}
                         >
                             {/* FormSubmit config */}
                             <input type="hidden" name="_subject" value="New inquiry from deathofaheart.com" />
