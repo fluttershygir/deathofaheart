@@ -74,6 +74,35 @@ h1, h2, h3 {
     letter-spacing: 4px !important;
 }
 
+/* iOS Safari viewport fix — 100dvh accounts for the URL bar */
+.hero-section {
+    height: 100vh;
+    height: 100dvh;
+    box-sizing: border-box;
+    /* Push content above the home indicator / URL bar on iOS */
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Scroll indicator sits above the iOS URL bar */
+.hero-scroll-indicator {
+    position: absolute;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 70px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Person selector buttons — ensure visible above bottom chrome */
+.person-selector {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
 @media (max-width: 768px) {
     .contact-grid {
         grid-template-columns: 1fr !important;
@@ -135,6 +164,22 @@ h1, h2, h3 {
 
     .contact-container {
         padding: 4rem 1.5rem !important;
+    }
+
+    /* Tighten up person selector on small screens */
+    .person-selector {
+        gap: 1rem !important;
+        margin-top: 1.5rem !important;
+    }
+
+    .person-selector button {
+        padding: 0.8rem 2rem !important;
+        font-size: 1.1rem !important;
+    }
+
+    /* Raise scroll indicator on mobile so it clears the URL bar */
+    .hero-scroll-indicator {
+        bottom: calc(env(safe-area-inset-bottom, 0px) + 90px) !important;
     }
 }
 

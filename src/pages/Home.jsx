@@ -225,9 +225,8 @@ const Home = () => {
                 }}
             >
                 {/* Hero Section */}
-                <div style={{ 
+                <div className="hero-section" style={{ 
                     position: 'relative',
-                    height: '100vh', 
                     display: 'flex', 
                     flexDirection: 'column', 
                     justifyContent: 'center', 
@@ -353,7 +352,7 @@ const Home = () => {
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: -10 }}
                                     transition={{ duration: 0.8, delay: 0.5 }}
-                                    style={{ display: 'flex', gap: '1.5rem', marginTop: '2.5rem', flexWrap: 'wrap', justifyContent: 'center' }}
+                                    className="person-selector" style={{ }}
                                 >
                                     {['shay', 'danica'].map((name) => {
                                         const isSelected = animatingPerson === name;
@@ -466,14 +465,7 @@ const Home = () => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: introComplete ? 1 : 0 }}
                         transition={{ delay: 2, duration: 1 }}
-                        style={{
-                            position: 'absolute',
-                            bottom: '10vh',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            gap: '10px'
-                        }}
+                        className="hero-scroll-indicator"
                     >
                         <span style={{ fontSize: '0.7rem', letterSpacing: '2px', textTransform: 'uppercase', color: '#666' }}>Scroll</span>
                         <motion.div 
