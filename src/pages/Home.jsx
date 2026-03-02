@@ -635,8 +635,8 @@ const Home = () => {
                             color: '#fff',
                             fontWeight: '400'
                         }}>
-                            Let's<br />
-                            <span style={{ fontStyle: 'italic', color: '#555' }}>create.</span>
+                            {activeProfile.contactHeading || "Let's"}<br />
+                            <span style={{ fontStyle: 'italic', color: '#555' }}>{activeProfile.contactHeadingItalic || 'create.'}</span>
                         </h2>
                     </motion.div>
 
@@ -673,7 +673,7 @@ const Home = () => {
                                 <input
                                     type="text"
                                     name="name"
-                                    placeholder="Name"
+                                    placeholder={activeProfile.namePlaceholder || 'Name'}
                                     required
                                     style={{
                                         width: '100%',
@@ -695,7 +695,7 @@ const Home = () => {
                                 <input
                                     type="email"
                                     name="email"
-                                    placeholder="Email"
+                                    placeholder={activeProfile.emailPlaceholder || 'Email'}
                                     required
                                     style={{
                                         width: '100%',
@@ -715,7 +715,7 @@ const Home = () => {
                             </div>
                             <div>
                                 <textarea
-                                    placeholder="Tell me about your project..."
+                                    placeholder={activeProfile.messagePlaceholder || 'Tell me about your project...'}
                                     name="message"
                                     required
                                     rows={4}
@@ -756,7 +756,7 @@ const Home = () => {
                                 onMouseEnter={(e) => { e.target.style.letterSpacing = '5px'; e.target.style.borderColor = '#8b0000'; e.target.style.color = '#ff4444'; }}
                                 onMouseLeave={(e) => { e.target.style.letterSpacing = '3px'; e.target.style.borderColor = '#555'; e.target.style.color = '#fff'; }}
                             >
-                                Send Message
+                                {activeProfile.sendButtonText || 'Send Message'}
                             </button>
                         </form>
                     </motion.div>

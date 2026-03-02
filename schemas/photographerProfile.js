@@ -64,6 +64,42 @@ export const photographerProfileSchema = {
       description: 'Instagram username WITHOUT the @ (e.g. "suchislifeisuppose" or "heymrkrabbs")',
       validation: (Rule) => Rule.required(),
     },
+    {
+      name: 'contactHeading',
+      title: 'Contact Heading (first line)',
+      type: 'string',
+      description: 'First line of the contact heading (default: "Let\'s")',
+    },
+    {
+      name: 'contactHeadingItalic',
+      title: 'Contact Heading (italic line)',
+      type: 'string',
+      description: 'Second italic line of the contact heading (default: "create.")',
+    },
+    {
+      name: 'namePlaceholder',
+      title: 'Name Field Placeholder',
+      type: 'string',
+      description: 'Placeholder for the Name input (default: "Name")',
+    },
+    {
+      name: 'emailPlaceholder',
+      title: 'Email Field Placeholder',
+      type: 'string',
+      description: 'Placeholder for the Email input (default: "Email")',
+    },
+    {
+      name: 'messagePlaceholder',
+      title: 'Message Field Placeholder',
+      type: 'string',
+      description: 'Placeholder for the message textarea (default: "Tell me about your project...")',
+    },
+    {
+      name: 'sendButtonText',
+      title: 'Send Button Text',
+      type: 'string',
+      description: 'Label on the submit button (default: "Send Message")',
+    },
   ],
   preview: {
     select: {

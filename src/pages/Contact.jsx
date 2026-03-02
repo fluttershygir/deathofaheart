@@ -49,8 +49,8 @@ const Contact = () => {
                 marginBottom: '2rem',
                 color: '#fff'
             }}>
-                Let's<br/>
-                <span style={{ fontStyle: 'italic', color: '#666' }}>create.</span>
+                {profile.contactHeading || "Let's"}<br/>
+                <span style={{ fontStyle: 'italic', color: '#666' }}>{profile.contactHeadingItalic || 'create.'}</span>
             </h1>
             <p className="contact-subtext" style={{ color: '#888', lineHeight: '1.6', marginBottom: '2rem' }}>
                 {profile.contactSubtext || 'Available for touring, festivals, and portrait sessions worldwide. Drop me a line and let\'s discuss your vision.'}
@@ -69,7 +69,7 @@ const Contact = () => {
               <input 
                 name="name"
                 type="text" 
-                placeholder="Name" 
+                placeholder={profile.namePlaceholder || 'Name'} 
                 style={{ 
                   width: '100%',
                   padding: '1rem 0', 
@@ -89,7 +89,7 @@ const Contact = () => {
               <input 
                 name="email"
                 type="email" 
-                placeholder="Email" 
+                placeholder={profile.emailPlaceholder || 'Email'} 
                 style={{ 
                   width: '100%',
                   padding: '1rem 0', 
@@ -108,7 +108,7 @@ const Contact = () => {
           <div className="input-group">
               <textarea 
                 name="message"
-                placeholder="Tell me about your project..." 
+                placeholder={profile.messagePlaceholder || 'Tell me about your project...'} 
                 rows="4" 
                 style={{ 
                   width: '100%',
@@ -145,7 +145,7 @@ const Contact = () => {
             onMouseEnter={(e) => { e.target.style.letterSpacing = '4px'; e.target.style.color = '#ff3333'; }}
             onMouseLeave={(e) => { e.target.style.letterSpacing = '2px'; e.target.style.color = '#fff'; }}
           >
-            Send Message
+            {profile.sendButtonText || 'Send Message'}
           </button>
         </form>
       </motion.div>
