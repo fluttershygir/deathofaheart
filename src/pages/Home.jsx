@@ -449,7 +449,7 @@ const Home = () => {
                                     animate={{ opacity: 1 }}
                                     exit={{ opacity: 0 }}
                                     transition={{ duration: 0.6, delay: 0.4 }}
-                                    style={{ marginTop: '1.5rem' }}
+                                    style={{ marginTop: '1.5rem', marginBottom: '5rem' }}
                                 >
                                     <button
                                         onClick={() => {
@@ -762,6 +762,7 @@ const Home = () => {
                     >
                         <a 
                             href="mailto:hello@deathofaheart.com" 
+                            className="social-pill-btn"
                             style={{ 
                                 color: '#fff', 
                                 textDecoration: 'none', 
@@ -770,7 +771,7 @@ const Home = () => {
                                 fontSize: '1.2rem',
                                 padding: '1.5rem 4rem',
                                 border: '1px solid #444',
-                                borderRadius: '50px', // Pill shape makes it more inviting
+                                borderRadius: '50px',
                                 transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
                                 backgroundColor: 'transparent',
                                 textAlign: 'center',
@@ -805,6 +806,7 @@ const Home = () => {
                             href="https://www.instagram.com/suchislifeisuppose" 
                             target="_blank" 
                             rel="noopener noreferrer"
+                            className="social-pill-btn"
                             style={{ 
                                 color: '#fff', 
                                 textDecoration: 'none', 
@@ -813,7 +815,7 @@ const Home = () => {
                                 fontSize: '1.2rem',
                                 padding: '1.5rem 4rem',
                                 border: '1px solid #444',
-                                borderRadius: '50px', // Pill shape
+                                borderRadius: '50px',
                                 transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
                                 backgroundColor: 'transparent',
                                 textAlign: 'center',

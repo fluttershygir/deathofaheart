@@ -25,20 +25,21 @@ const Navbar = () => {
     navigate('/');
   };
 
+  const scrollToContact = () => {
+    const el = document.getElementById('contact');
+    if (!el) return;
+    const navHeight = 80;
+    const top = el.getBoundingClientRect().top + window.scrollY - navHeight;
+    window.scrollTo({ top, behavior: 'smooth' });
+  };
+
   const handleContact = (e) => {
     e.preventDefault();
     if (location.pathname === '/') {
-      // Already on home — just scroll
-      const el = document.getElementById('contact');
-      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      scrollToContact();
     } else {
-      // On another page — navigate to home with hash so intro is skipped
       navigate('/#contact');
-      // After navigation, scroll once the DOM settles
-      setTimeout(() => {
-        const el = document.getElementById('contact');
-        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }, 300);
+      setTimeout(scrollToContact, 300);
     }
   };
 

@@ -159,6 +159,16 @@ h1, h2, h3 {
     box-sizing: border-box;
 }
 
+/* Social pill buttons — smaller on mobile */
+@media (max-width: 768px) {
+    .social-pill-btn {
+        font-size: 0.75rem !important;
+        padding: 0.9rem 2rem !important;
+        min-width: 0 !important;
+        letter-spacing: 3px !important;
+    }
+}
+
 @media (max-width: 768px) {
     .contact-grid {
         grid-template-columns: 1fr !important;
